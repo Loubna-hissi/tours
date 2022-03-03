@@ -1,25 +1,20 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react';
+import './index.css';
+import Tours from './Tours';
+import useFetch from './useFetch';
 
 function App() {
+  const {loading ,data,error,setData}=useFetch('http://localhost:8000/tours')
+  const deleteTour = (id) => {
+    setData(data.filter((tour)=>tour.id!=id))
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      {loading && <h3 className="title">{loading}</h3>}
+      {data && <Tours tours={data} deleteTour={deleteTour}></Tours>}
+      {error && <h3>{error}</h3>}
     </div>
-  );
+  )
 }
 
 export default App;
